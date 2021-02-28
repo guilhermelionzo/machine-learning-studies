@@ -23,7 +23,7 @@ namespace SentimentAnalysis
             if (_useTrainedData)
             {
                 DataViewSchema modelSchema;
-                ITransformer trainedModel = mlContext.Model.Load("data.zip", out modelSchema);
+                ITransformer trainedModel = mlContext.Model.Load("model.zip", out modelSchema);
                 UseModelWithBatchItems(mlContext, trainedModel);
                 tock = DateTime.Now.Second + DateTime.Now.Millisecond / 1000;
                 Console.WriteLine($"tick{tick}:{tock}\n{(tock - tick) * 1000}");
@@ -32,7 +32,7 @@ namespace SentimentAnalysis
 
             TrainTestData splitDataView = LoadData(mlContext, out IDataView dataview);
             ITransformer model = BuildAndTrainModel(mlContext, splitDataView.TrainSet);
-            mlContext.Model.Save(model, dataview.Schema, "data.zip");
+            mlContext.Model.Save(model, dataview.Schema, "model.zip");
             Evaluate(mlContext, model, splitDataView.TestSet);
             UseModelWithSingleItem(mlContext, model);
             UseModelWithBatchItems(mlContext, model);
